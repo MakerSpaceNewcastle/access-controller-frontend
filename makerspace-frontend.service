@@ -1,0 +1,14 @@
+[Unit] 
+Description=Makerspace access controller frontend
+
+[Service] 
+Type=simple 
+Restart=always 
+User=ubuntu 
+Group=ubuntu 
+WorkingDirectory=/home/ubuntu/access-controller-frontend
+ExecStart=/usr/local/bin/npm start 
+
+[Install]
+WantedBy=multi-user.target
+
