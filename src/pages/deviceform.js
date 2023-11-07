@@ -124,6 +124,7 @@ export function DeviceForm(props) {
           <CleverTable key="devicetable"
             header={[{name: "name", title: "Name"}]}
             data={device.users}
+            deleteFunction = {deleteUsers}
           />
           </div>
         }
