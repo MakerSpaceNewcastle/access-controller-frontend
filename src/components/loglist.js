@@ -42,10 +42,7 @@ export function LogList(props) {
 
 return (
     <div>
-    <h1>Logged Events</h1>
-    <hr/>
-    <div>
-    <Table striped bordered hover variant="dark" key={header}>
+    <Table striped bordered hover variant="dark" key={header} >
     <thead><tr>
     {header.map(e=><th>{e.title}</th>)}
     </tr>
@@ -54,21 +51,31 @@ return (
     {
         logData.map(row=> {
         //For each row:
-        return ( 
-            <tr>
-            {header.map(column => {
-                switch(column.name) {
-                    default:
-                        return <td>{row[column.name]}</td>
+         return ( 
+            <tr >
+            {header.map(column => { 
+                if (column.name == "type") {
+                    switch (row[column.name]) {
+                        case "LoginFail":
+                            return <div class="LoginFailRow"> <td>{row[column.name]}</td></div>
+                        case "Activated":
+                            return <div class="ActivatedRow"> <td>{row[column.name]}</td></div>
+                        case "Deactivated":
+                            return <div class="DeactivatedRow"> <td>{row[column.name]}</td></div>
+                        default:
+                            return <td>{row[column.name]}</td>
+                    }
                 }
-            })}
+                else {
+                    return <td>{row[column.name]}</td>
+                }
+            })};
             </tr>
         )           
         })
     }
     </tbody>
     </Table>   
-    </div>     
     </div>
 );
 };

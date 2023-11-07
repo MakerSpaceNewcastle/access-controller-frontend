@@ -25,3 +25,24 @@
 .App-link {
   color: #61dafb;
 }
+
+.LoginFailRow {
+  --bs-table-striped-bg: red;  
+  --bs-table-active-bg: red;
+  --bs-table-hover-bg: red;
+  --bs-table-bg: red;
+}
+
+.ActivatedRow {
+  --bs-table-striped-bg: green;  
+  --bs-table-active-bg: green;
+  --bs-table-hover-bg: green;
+  --bs-table-bg: green;
+}
+
+.DeactivatedRow {
+  --bs-table-striped-bg: orange;  
+  --bs-table-active-bg: orange;
+  --bs-table-hover-bg: orange;
+  --bs-table-bg: orange;
+}
