@@ -8,20 +8,16 @@ import {CleverTable} from '../components/clevertable'
 import { useNavigate } from "react-router-dom";
 import Alert from 'react-bootstrap/Alert';
 
-
 const usersEndpoint = process.env.REACT_APP_API_BASEURL + "users/"
 const devicesEndpoint = process.env.REACT_APP_API_BASEURL + "devices/"
   
-
 export function DeviceForm(props) {
 
-    const { id } = useParams()
-    const navigate = useNavigate();
-    const { deviceId } = useParams()
-
-    //Validators for form
-    const [nameValid, setNameValid ] = useState(true);
-
+  const { id } = useParams()
+  const navigate = useNavigate();
+  const { deviceId } = useParams()
+  //Validators for form
+  const [nameValid, setNameValid ] = useState(true);
 
   //Start with a blank device
   const [device, setDevice] = useState({

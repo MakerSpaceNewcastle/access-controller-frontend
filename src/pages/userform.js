@@ -16,8 +16,8 @@ import {UserFormAddDeviceModal} from '../components/userform_adddevice_modal'
 const usersEndpoint = process.env.REACT_APP_API_BASEURL  + "users/"
 const devicesEndpoint = process.env.REACT_APP_API_BASEURL + "devices/"
 
-//If a device with this name exists, it will be auto-added when a new user is created.
-const defaultDeviceToAdd = "Back door"; //process.env.REACT_APP_DEFAULT_DEVICE;
+//If a device with this name exists, it will be auto-added to the device list when a new user is created.
+const defaultDeviceToAdd = process.env.REACT_APP_DEFAULT_DEVICE;
 
 export function UserForm(props) {
 
@@ -61,7 +61,6 @@ export function UserForm(props) {
       let allDevices = await fetch(devicesEndpoint);
       let jsonAllDevices = await allDevices.json();
       setAllDevices(jsonAllDevices);
-      console.log(jsonAllDevices);
 
       if (id===undefined && user.permissions.count==undefined ) {
         //If this is a new create user, find and add the default device if it exists.

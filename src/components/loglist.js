@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import '../App.css';
 
-let logsEndpoint = process.env.REACT_APP_API_BASEURL + "logs/"
-
+let logsEndpoint = process.env.REACT_APP_API_BASEURL + "logs"
 
 export function LogList(props) {
     //Define the header for the log event table
@@ -30,11 +29,12 @@ export function LogList(props) {
     const [logData, setLogData] = useState([]);
 
     async function loadDataFromEndpoint() {
-        let result = await fetch(logsEndpoint + props.page);
+        let startEntry = props.entriesPerPage * props.pageNum;
+        let url = logsEndpoint + "?start=" + startEntry  + "&end="+ (startEntry + props.entriesPerPage) + "&device=" + props.deviceFilter;
+        let result = await fetch(url);
         let data = await result.json();
         setLogData(data);
     }
-
     useEffect(()=> {
         loadDataFromEndpoint();
         //Load the list of users on component render

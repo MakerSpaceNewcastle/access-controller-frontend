@@ -11,17 +11,18 @@ export function UserFormAddRfidModal(props) {
   const [hashValid, setHashValid ] = useState(true);
 
   useEffect(()=> {
-    setShowModal(props.show);
-    if (props.rfid != undefined) {
-      setRfid(prev=> {return props.rfid});;
+    if (props.rfid !== undefined) {
+      setRfid(props.rfid);
+    } 
+    else {
+      setRfid(prev=> {return {card_hash:"", active: true, description:""}});
     }
+    setShowModal(props.show);
   },[props]);
 
   function checkValid() {
     let result = true;
-    if (rfid.card_hash == "") {
-      //Fixme - need more strict validation here. 
-      //Check it's hex, and how long it is...
+    if (rfid.card_hash.match(/^[0-9A-Fa-f]{32}$/) == null) {
       setHashValid(false);
       result = false;
     }
@@ -53,19 +54,20 @@ export function UserFormAddRfidModal(props) {
 
         <Form.Group className="mb-3" controlId="formDevice">
         <Form.Label>RFID hash</Form.Label>
-        <Form.Control type="text" placeholder="Hash in hex format"  value={rfid.card_hash}
+        <Form.Control type="text" maxlength="32" placeholder="Hash in hex format"  value={rfid.card_hash}
           onChange={(e)=> { 
             setRfid(prev => {return {...prev, card_hash: e.target.value}})}
           }
         />
 
-        {!hashValid && <Alert variant="danger">A card hash must be specified</Alert> }
+        {!hashValid && <Alert variant="danger">Card hash length must be 32 hex chars</Alert> }
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="modalEnabled">
         <Form.Check type="checkbox" label="RFID enabled?" checked={rfid.active} 
          onChange={
-          e=> setRfid(prev => {return {...prev, active: e.target.checked}}) } 
+          e=> setRfid(prev => { return {...prev, active: e.target.checked}})
+         }
         />
         </Form.Group>
         
@@ -79,11 +81,9 @@ export function UserFormAddRfidModal(props) {
       Close
       </Button>
       <Button variant="primary" onClick={()=> {
-        console.log("rfid is ")
-        console.log(rfid);
         if (checkValid() == true) {
           //Trigger the callback
-        props.okFunction(rfid); 
+          props.okFunction(rfid); 
           //Clear out our fields ready for a future operation
           clearModal();
         }
