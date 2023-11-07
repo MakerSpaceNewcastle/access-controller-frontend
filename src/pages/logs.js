@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 let entriesPerPage=10;
 
 let countEndpoint = process.env.REACT_APP_API_BASEURL + "logs/count"
-
 //Used to filter by device
 let devicesEndpoint = process.env.REACT_APP_API_BASEURL + "devices"
 
@@ -44,10 +43,17 @@ export function Logs(props) {
       setDeviceList(devicejson);
     };
 
-    const autoRefresh = setInterval(()=> {
-	loadDataFromEndpoints();
-	}, 10000);
-    
+    if (currentPage == 0) {
+      //Only worth autorefreshing if we're on 'first' page
+      const autoRefresh = setInterval(()=> {
+        loadDataFromEndpoints();
+      }, 10000);      
+      return () => clearInterval(autoRefresh);
+    }
+    else {
+      loadDataFromEndpoints();
+    }
+
   },[props, deviceFilter]);
 
   return (
