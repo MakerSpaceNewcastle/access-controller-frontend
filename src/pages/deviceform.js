@@ -38,7 +38,16 @@ export function DeviceForm(props) {
     loadDataFromEndpoints();
   },[props]);
 
-  function checkValid() {
+    //Remove the RFID specified by ID from the list of users' rfids
+    function deleteUsers(ids) {
+      ids.forEach(id=> {  
+        setDevice(prev=> {
+          return {...prev, users: prev.users.filter(e=>e.id != id)}  
+        });  
+      });
+    }
+
+   function checkValid() {
     let result = true;
     if (device.name == "") {
       setNameValid(false);
@@ -81,7 +90,6 @@ export function DeviceForm(props) {
     alert("Update failed - " + json["message"]);
     return;
    }
-
    //Return to previous page
    navigate(-1); 
   };
@@ -109,6 +117,17 @@ export function DeviceForm(props) {
             <Form.Check type="checkbox" label="Device available?" 
               onChange={e=> setDevice(prev => {return {...prev, available: e.target.checked}}) }  checked={device!==undefined && device.available } />
           </Form.Group>
+ 
+        {device.users!=[] && 
+          <div>
+          <Form.Label>Authorised users</Form.Label>
+          <CleverTable key="devicetable"
+            header={[{name: "name", title: "Name"}]}
+            data={device.users}
+          />
+          </div>
+        }
+
           <hr/>
           <Button variant="success" type="submit">
             Apply
