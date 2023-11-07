@@ -56,6 +56,8 @@ export function UserList(props) {
                 addFunction={addUser}
                 modifyFunction={modifyUser}
                 deleteFunction={deleteUser}
+
+                class="LogTable"
             />
         </div>
     );

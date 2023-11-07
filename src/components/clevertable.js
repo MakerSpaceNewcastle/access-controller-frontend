@@ -56,7 +56,7 @@ export function CleverTable(props) {
     }
     
     return (
-        <div>
+        <div class="Table">
         <Table striped bordered hover variant="dark" key={header}>
         <thead><tr>
         <th>Select</th>

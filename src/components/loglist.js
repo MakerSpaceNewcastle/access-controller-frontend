@@ -41,7 +41,7 @@ export function LogList(props) {
     }, [props]);
 
 return (
-    <div>
+    <div class="Table">
     <Table striped bordered hover variant="dark" key={header} >
     <thead><tr>
     {header.map(e=><th>{e.title}</th>)}
@@ -69,7 +69,7 @@ return (
                 else {
                     return <td>{row[column.name]}</td>
                 }
-            })};
+            })}
             </tr>
         )           
         })

@@ -57,9 +57,8 @@ export function Logs(props) {
       </div>
 
       <LogList pageNum={currentPage} entriesPerPage={entriesPerPage} deviceFilter={deviceFilter}></LogList>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">     
+      <nav aria-label="Navigation">
+        <ul class="pagination justify-content-center table">     
           <li class= {currentPage == 0 && "page-item disabled" || "page item"}>
             <a class="page-link" onClick={prevPage} href="#">Previous</a>
           </li> 

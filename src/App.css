@@ -10,7 +10,6 @@
   color: white;
 }
 
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -45,4 +44,9 @@
   --bs-table-active-bg: orange;
   --bs-table-hover-bg: orange;
   --bs-table-bg: orange;
+}
+
+.Table {
+  font-size: calc(30px);
+
 }
