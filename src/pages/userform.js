@@ -160,7 +160,9 @@ export function UserForm(props) {
       });
 
       if (!response.ok) {
-        alert("Update failed - " + response.statusText);
+        //The backend should have replied with a JSON message to explain what the problem is.
+        let json = await response.json();
+        alert("Update failed - " + json.message);
       }
       navigate(-1);
     }
