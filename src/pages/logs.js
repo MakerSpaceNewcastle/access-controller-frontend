@@ -31,7 +31,7 @@ export function Logs(props) {
     setCurrentPage(tempPage); 
   }
 
-  useEffect(() => {
+  useEffect(() =>  {
     async function loadDataFromEndpoints() {
       //Work out how many pages we are going to need to display results.
       let count = await fetch(countEndpoint + "?device=" + deviceFilter)
@@ -43,7 +43,11 @@ export function Logs(props) {
       let devicejson = await deviceList.json();
       setDeviceList(devicejson);
     };
-    loadDataFromEndpoints();
+
+    const autoRefresh = setInterval(()=> {
+	loadDataFromEndpoints();
+	}, 10000);
+    
   },[props, deviceFilter]);
 
   return (
