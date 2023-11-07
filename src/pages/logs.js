@@ -44,6 +44,7 @@ export function Logs(props) {
     };
 
     if (currentPage == 0) {
+      loadDataFromEndpoints();
       //Only worth autorefreshing if we're on 'first' page
       const autoRefresh = setInterval(()=> {
         loadDataFromEndpoints();
