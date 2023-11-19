@@ -1,4 +1,6 @@
 import '../App.css';
+import Pagination from "react-js-pagination";
+
 
 import {LogList} from '../components/loglist';
 import React, { useEffect, useState } from 'react';
@@ -11,39 +13,32 @@ let devicesEndpoint = process.env.REACT_APP_API_BASEURL + "devices"
 
 export function Logs(props) {
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [numItems, setNumItems] = useState(0);
 
   //These are used to allow the user to filter by device
   const [deviceList, setDeviceList] = useState([]);
   const [deviceFilter, setDeviceFilter] = useState("all");
   
-  function nextPage() {
-    setCurrentPage(prev=>{return prev+1})
-  }
-
-  function prevPage() {
-    let tempPage = currentPage;
-    if (tempPage > 0) {
-      tempPage -=1;
-    }
-    setCurrentPage(tempPage); 
+  function handlePageChange(pageNumber) {
+    setCurrentPage(pageNumber);
   }
 
   useEffect(() =>  {
     async function loadDataFromEndpoints() {
-      //Work out how many pages we are going to need to display results.
-      let count = await fetch(countEndpoint + "?device=" + deviceFilter)
-      let json = await count.json();
-      setPageCount(Math.ceil(json.count / entriesPerPage));
-      
       //Populate device list to allow filtering
       let deviceList = await fetch(devicesEndpoint);
       let devicejson = await deviceList.json();
       setDeviceList(devicejson);
+
+      //Work out how many items there are - the paginator will use this to work out
+      //what pages to display
+      let count = await fetch(countEndpoint + "?device=" + deviceFilter)
+      let json = await count.json();
+      setNumItems(json.count);
     };
 
-    if (currentPage == 0) {
+    if (currentPage == 1) {
       loadDataFromEndpoints();
       //Only worth autorefreshing if we're on 'first' page
       const autoRefresh = setInterval(()=> {
@@ -57,6 +52,7 @@ export function Logs(props) {
 
   },[props, deviceFilter]);
 
+
   return (
     <div className="App-header">
       <div>
@@ -67,29 +63,18 @@ export function Logs(props) {
         </select>
       </div>
 
-      <LogList pageNum={currentPage} entriesPerPage={entriesPerPage} deviceFilter={deviceFilter}></LogList>
-      <nav aria-label="Navigation">
-        <ul class="pagination justify-content-center table">     
-          <li class= {currentPage == 0 && "page-item disabled" || "page item"}>
-            <a class="page-link" onClick={prevPage} href="#">Previous</a>
-          </li> 
-          <li class={currentPage + 1 > pageCount-1 && "page-item disabled" || "page item"}> 
-            <a class="page-link" onClick={()=>{setCurrentPage(currentPage+1)}}>{currentPage + 1}</a>
-          </li>
-          <li class={currentPage + 2 > pageCount-1 && "page-item disabled" || "page item"}> 
-            <a class="page-link" onClick={()=>{setCurrentPage(currentPage+2)}}>{currentPage + 2}</a>
-          </li>
-          <li class={currentPage + 3 > pageCount-1 && "page-item disabled" || "page item"}> 
-            <a class="page-link" onClick={()=>{setCurrentPage(currentPage+3)}}>{currentPage + 3}</a>
-          </li>
-          <li class={currentPage + 4 > pageCount-1 && "page-item disabled" || "page item"}> 
-            <a class="page-link" onClick={()=>{setCurrentPage(currentPage+4)}}>{currentPage + 4}</a>
-          </li>
-          <li class={currentPage == pageCount-1 && "page-item disabled" || "page item"}>
-            <a class="page-link" onClick={nextPage}>Next</a>
-          </li>
-        </ul>
-      </nav>
+      <LogList pageNum={currentPage-1} entriesPerPage={entriesPerPage} deviceFilter={deviceFilter}></LogList>
+      <Pagination 
+      activePage = {currentPage}
+      pageRangeDisplayed ={5}
+      itemsCountPerPage ={10}
+      totalItemsCount = {numItems}
+      itemClass="page-item"
+      linkClass="page-link"
+      onChange={(num)=>handlePageChange(num)}
+      
+      />
+
     </div>
   );
 };
