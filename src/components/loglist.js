@@ -6,6 +6,31 @@ import '../App.css';
 
 let logsEndpoint = process.env.REACT_APP_API_BASEURL + "logs"
 
+export function LogListRow(props) {
+	let rowClass;
+	//Style the rows by  warning/danger/ok depending on login event type
+	switch (props.row["type"]) {
+		  case "LoginFail":
+			rowClass = "table-danger"
+			break;
+                  case "Activated":
+                        rowClass = "table-success"
+			break; 
+                  case "Deactivated":
+                        rowClass = "table-warning"
+			break;
+	}
+
+	return (
+		<tr class={rowClass}>
+	 	{props.header.map(column=> {
+			return <td>{props.row[column.name]}</td>
+		})}
+		</tr>
+	);
+}
+
+
 export function LogList(props) {
     //Define the header for the log event table
     let header = [
@@ -48,32 +73,7 @@ return (
     </tr>
     </thead>
     <tbody>
-    {
-        logData.map(row=> {
-        //For each row:
-         return ( 
-            <tr >
-            {header.map(column => { 
-                if (column.name == "type") {
-                    switch (row[column.name]) {
-                        case "LoginFail":
-                            return <div class="LoginFailRow"> <td>{row[column.name]}</td></div>
-                        case "Activated":
-                            return <div class="ActivatedRow"> <td>{row[column.name]}</td></div>
-                        case "Deactivated":
-                            return <div class="DeactivatedRow"> <td>{row[column.name]}</td></div>
-                        default:
-                            return <td>{row[column.name]}</td>
-                    }
-                }
-                else {
-                    return <td>{row[column.name]}</td>
-                }
-            })}
-            </tr>
-        )           
-        })
-    }
+    { logData.map(row=> <LogListRow header={header} row={row} />) }
     </tbody>
     </Table>   
     </div>
