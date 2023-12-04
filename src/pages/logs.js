@@ -57,13 +57,14 @@ export function Logs(props) {
     <div className="App-header">
       <div>
         Filter by device:
-        <select name="device" id="device" onChange={e=>setDeviceFilter(e.target.value)}>
+        <select name="device" id="device" onChange={e=>  { setDeviceFilter(e.target.value); setCurrentPage(1);}}>
           <option key="all">all</option>
           {deviceList.map(e=> {return <option key={e.id} value = {e.name}>{e.name}</option>})}
         </select>
       </div>
-
+      <div class="table-responsive">
       <LogList pageNum={currentPage-1} entriesPerPage={entriesPerPage} deviceFilter={deviceFilter}></LogList>
+      </div>
       <Pagination 
       activePage = {currentPage}
       pageRangeDisplayed ={5}
